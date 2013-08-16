@@ -114,6 +114,7 @@ INSTALLED_APPS = (
     "pagination",
     'reviews',
     "tagging",
+    "taggit",
     "portlets",
     "lfs",
     "lfs.addresses",

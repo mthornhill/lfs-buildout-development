@@ -12,14 +12,13 @@ from django.contrib.webdesign.lorem_ipsum import paragraph, sentence, words
 from django.core import management
 
 # lfs imports
-from lfs.core.models import Action, Shop, Country
-from lfs.catalog.models import Category, Product, Image, DeliveryTime
+from lfs.core.models import Shop, Country
+from lfs.catalog.models import Category, Product, DeliveryTime
 from lfs.catalog.settings import DELIVERY_TIME_UNIT_DAYS
-from lfs.core.fields.thumbs import ImageWithThumbsField
 from lfs.marketing.models import Topseller, FeaturedProduct
-from lfs.criteria.models import WeightCriterion, CriteriaObjects, CountryCriterion
-from lfs.criteria.settings import LESS_THAN_EQUAL, IS, IS_NOT, GREATER_THAN
-from lfs.shipping.models import ShippingMethod, ShippingMethodPrice
+from lfs.criteria.models import CountryCriterion
+from lfs.criteria.settings import IS, IS_NOT
+from lfs.shipping.models import ShippingMethod
 from lfs.tax.models import Tax
 from portlets.models import PortletAssignment, Slot, PortletRegistration
 from lfs.portlet.models import CartPortlet, CategoriesPortlet, PagesPortlet, RecentProductsPortlet, RelatedProductsPortlet, TextPortlet, PagesPortlet
@@ -129,31 +128,31 @@ def load_data():
 
 
     # shipping prices setup
-    delivery_time, created = DeliveryTime.objects.get_or_create(min=2, max=7, unit=DELIVERY_TIME_UNIT_DAYS,
-                                                                description="2 to 7 for delivery")
+    # delivery_time, created = DeliveryTime.objects.get_or_create(min=2, max=7, unit=DELIVERY_TIME_UNIT_DAYS,
+    #                                                             description="2 to 7 for delivery")
 
     # criterion for geo-specific delivery charges    
-    cc_ie_uk = CountryCriterion.objects.create(operator=IS)
-    cc_ie_uk.countries.add(ie)
-    cc_ie_uk.countries.add(gb)
-    cc_ie_uk.save()
-
-    cc_not_ie_uk = CountryCriterion.objects.create(operator=IS_NOT)
-    cc_not_ie_uk.countries.add(ie)
-    cc_not_ie_uk.countries.add(gb)
-    cc_not_ie_uk.save()
-
-    #Rest of World >1kg ?16.95    
-    smp_1095, created = ShippingMethod.objects.get_or_create(name="Ireland & UK", price=10.95, active=True,
-                                                             delivery_time=delivery_time, priority=1)
-    smp_1500, created = ShippingMethod.objects.get_or_create(name="International", price=15.00, active=True,
-                                                             delivery_time=delivery_time, priority=1)
-
-    co = CriteriaObjects(criterion=cc_ie_uk, content=smp_1095)
-    co.save()
-
-    co = CriteriaObjects(criterion=cc_not_ie_uk, content=smp_1500)
-    co.save()
+    # cc_ie_uk = CountryCriterion.objects.create(operator=IS)
+    # cc_ie_uk.countries.add(ie)
+    # cc_ie_uk.countries.add(gb)
+    # cc_ie_uk.save()
+    #
+    # cc_not_ie_uk = CountryCriterion.objects.create(operator=IS_NOT)
+    # cc_not_ie_uk.countries.add(ie)
+    # cc_not_ie_uk.countries.add(gb)
+    # cc_not_ie_uk.save()
+    #
+    # #Rest of World >1kg ?16.95
+    # smp_1095, created = ShippingMethod.objects.get_or_create(name="Ireland & UK", price=10.95, active=True,
+    #                                                          delivery_time=delivery_time, priority=1)
+    # smp_1500, created = ShippingMethod.objects.get_or_create(name="International", price=15.00, active=True,
+    #                                                          delivery_time=delivery_time, priority=1)
+    #
+    # co = CriteriaObjects(criterion=cc_ie_uk, content=smp_1095)
+    # co.save()
+    #
+    # co = CriteriaObjects(criterion=cc_not_ie_uk, content=smp_1500)
+    # co.save()
 
     left_slot, created = Slot.objects.get_or_create(name="Left")
     right_slot, created = Slot.objects.get_or_create(name="Right")
