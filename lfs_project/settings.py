@@ -115,6 +115,7 @@ INSTALLED_APPS = (
     'reviews',
     "tagging",
     "taggit",
+    "taggit_templatetags",
     "portlets",
     "lfs",
     "lfs.addresses",
